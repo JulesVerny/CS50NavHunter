@@ -1,5 +1,5 @@
 # CS50 NavHunter
-#### Video Demo:  <URL HERE>
+#### Video Demo:  https://www.youtube.com/watch?v=g8T0x6u9Neo
 ### Description:
 
 This Web Application has been developed as a Final Project Submission into the online Harvard CS50 Course.

@@ -1,0 +1,25 @@
+{% extends "adminlayout.html" %}
+
+{% block body %}
+    <h2>List of Units in Hunter Database</h2>
+
+    <table>
+      <thead>
+          <tr>
+              <th>Track Number</th>
+              <th>Unit Type</th>
+              <th>Base Hostility</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for aunit in unitlist %}
+              <tr>
+                  <td>{{ aunit.tn }}</td>
+                  <td>{{ aunit.unit_type }}</td>
+                  <td>{{ aunit.hostility }}</td>
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+
+{% endblock %}   

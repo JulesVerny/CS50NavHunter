@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang=""en">
+  <head>
+    <title>Scenarios Administration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/adminstyles.css') }}">
+  </head>
+  <body>
+    
+<ul class="navlist">
+  <li class="navlistitem"><a href="/">Tactical Display</a></li>
+  <li class="navlistitem"><a href="/scenarios">Scenarios</a></li>
+  <li class="navlistitem"><a href="/units">Units</a></li>
+  <li class="navlistitem"><a href="/about">About</a></li>
+</ul>
+<hr>
+    {% block body %}{% endblock %}
+
+  </body>
+</html>

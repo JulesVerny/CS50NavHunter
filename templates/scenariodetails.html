@@ -1,0 +1,59 @@
+{% extends "adminlayout.html" %}
+
+{% block body %}
+    
+    <H2>Scenario Event Details For Scenario : {{scenarioID}}</H2>
+
+    <table>
+      <thead>
+          <tr>
+              <th>Time</th>
+              <th>Track Number (TN)</th>
+              <th>Event Type</th>
+              <th>Suspicion Level</th>
+              <th>Local X Position</th>
+              <th>Local Y Position</th>
+              <th>Local X Velocity</th>
+              <th>Local Y Velocity</th>
+
+          </tr>
+      </thead>
+      <tbody>
+          {% for anevent in scenariodetailslist %}
+              <tr>
+                  <td>{{ anevent.time }}</td>
+                  <td>{{ anevent.tn }}</td>
+                  <td>{{ anevent.event_type }}</td>
+                  <td>{{ anevent.suspicion }}</td>
+                  <td>{{ anevent.x_pos }}</td>
+                  <td>{{ anevent.y_pos }}</td>
+                  <td>{{ anevent.x_vel }}</td>
+                  <td>{{ anevent.y_vel }}</td>
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+<hr>
+
+<H2>Task Group Region for : {{scenarioID}}</H2>
+
+    <table>
+      <thead>
+          <tr>
+              <th>WP Lat</th>
+              <th>WP Long</th>
+
+          </tr>
+      </thead>
+      <tbody>
+          {% for awp in ctgwplist %}
+              <tr>
+                  <td>{{ awp.wp_lat }}</td>
+                  <td>{{ awp.wp_long }}</td>
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+<hr>
+
+{% endblock %}   

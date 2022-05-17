@@ -1,0 +1,42 @@
+{% extends "adminlayout.html" %}
+
+{% block body %}
+    <h2>List of Scenarios in Hunter Database</h2>
+
+    <table>
+      <thead>
+          <tr>
+              <th>Scenario</th>
+              <th>Selected</th>
+              <th>Base Latitude</th>
+              <th>Base Longtitude</th>
+              <th></th>
+              <th></th>
+
+          </tr>
+      </thead>
+      <tbody>
+          {% for ascenario in scenariolist %}
+              <tr>
+                  <td>{{ ascenario.id }}</td>
+                  <td>{{ ascenario.selected }}</td>
+                  <td>{{ ascenario.base_lat }}</td>
+                  <td>{{ ascenario.base_long }}</td>
+                  <td>
+                      <form action="/selectscenario" method="post">
+                          <input name="selectedscenarioid" type="hidden" value="{{ ascenario.id }}">
+                          <input type="submit" value="Select">
+                      </form>
+                  </td>
+                  <td>
+                    <form action="/displayscenarioevents" method="post">
+                        <input name="displayscenarioid" type="hidden" value="{{ ascenario.id }}">
+                        <input type="submit" value="Display Details">
+                    </form>
+                </td>
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+
+{% endblock %}   

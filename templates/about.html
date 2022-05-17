@@ -1,0 +1,180 @@
+{% extends "adminlayout.html" %}
+
+{% block body %}
+<H2> Naval Route Planning Demonstrator</H2>
+<P>
+This Web Application was developed as a Final Project Submission into the online Harvard CS50 Course. 
+</P> 
+<p> This web Application is simple Route Planning for Tactical Surveillance Scenarios. The purpose is to plan a route for a surveillance dron to go out, survey and identify 
+  each of the Unknown Tracks appearing within the Tactical Picture. The Surveillance route of the drone is calculated to pass over those unidentifed unknown Tracks, 
+  in order to identify those Track unit Types and to classify them as being Hostile, friendly or Neutral. The route planning algorithms utilise a Genetic Algorithm in order 
+  to calculate different naval routes depending upon different priority criteria: </p>
+
+<ul class="displaylist"> 
+  <li class = "displaylistitem">Shortest Distance (or Fuel usage) - Aka the "Travelling Salesperson Criteria</li>
+  <li class = "displaylistitem">Those Tracks appearing Closest Point of approach (CPA) to the Task group,</li>
+  <li class = "displaylistitem">Priority of those Tracks with highest Speed </li>
+  <li class = "displaylistitem">Priority of those Tracks exhibiting a high suspicion value</li>
+</ul>
+  
+<p>Where the Drone will launch from Own Ship which is designated as Track 00. The objectives will be to develop a surveillance route from Own Ship (00) 
+  to protect the Naval Task Group (TG) region. And hence any Closest Point of Approach(CPA) calculations will be performed agaisnt those Tracks appearing to approach 
+  the centre of that region.</p>
+<hr>
+<img src="{{ url_for('static', filename='images/Screenview.PNG') }}"/>
+<hr>
+
+<h3>Tactical Scenario</h3>
+ 
+<p>A number of Tactical Scenarios are maintained in a mySQL Hunter Database. These will illuminate emerging Unknown Tracks appearing within the 
+  Tactical Display map view. The Tactical Scenario Controls: Start Pause and Stop the tactical Scenario Running. 
+  These Tracks will emerge over time as 'Unknown' Tracks  detected as the ships sensors over time. As each Track is detected, it is allocated a Track Number.  
+  The lines from each Track represent their identified speed and direction.  
+</p>
+
+<p> The Tactical Scenario is Started and Controlled by the Scenario Controls: Start Pause and Stop </p>
+
+<h3> Calculation of Surviellance Routes</h3>
+
+<p> We cannot realisitically asses all the Tracks within the Tactical picture. Genetic Algorithms do not scale so well. So we perform some preselection of those Tracks 
+  which are of interest. </p>
+<p>Tracks can be filtered on only thsoe within an Area of Interest (AOI) polygon filter.  This is created using 'Create AOI' button, clicking on the map, 
+  and completing with 'AOI Complete'.</p>
+
+<p>Tracks can also be Nomionated: Nominate a few Tracks, by 'Nominate' and then clicking on those Tracks in the map, complete the nomination process, 
+with 'Complete Nominations'. (n.b Scenario has to be running for the Nominations Tracks to show up.) </p>
+
+<p>The Slider based User controls are provided, to enable the User to control the relative Weighting across the different criteria: Fuel, CPA, Speed and Suspicion. </p>
+
+<p>The user can Request Routes to then be calculted through the ("Create Route") Button. The Routes generation will only be applied to those Tracks currently either in the Area of Interest, or those explicitly 
+Nominated. (Note the check of Tracks within the AOI, is conducted ion Javascript, client side, because of the convenience of Google Maps API, to perform this check. 
+It would really makes more sense for the AOI to be captured within Mission Planning Server, in production code, with a Lat/ Long Library.) The Routes will not be 
+calculated if there are No Tracks in AOI or Nominated, and the Route Planning is now limited to around 10 Tracks Maximum. The Mission Palnning will throw an error 
+resposne if More Tracks are selected. By this pre filtering, and selection to reasonable numbers, and user choice, makes it more ammenable for filtering down to Realistic Endurance, distance limited 
+routes when that is imposed.
+</p>
+
+<p>A selection of routes are then calculated against different route surveillance priorities: Fuel, CPA, Speed, Suspicion Criteria and scores. The Table will show a number of different routes, each optimised against the criteria.  These enable the user some choice to review, select and execute 
+different route choices</p>
+
+<p>The Route Table gets filled according to the following routes: </p>
+
+<ul class="displaylist">
+<li class = "displaylistitem">Rank 1 Route: A Balanced Route Weighted (As per User Requested Weight ) </li>
+<li class = "displaylistitem">Rank 2 Route: Optimised Route for Fuel Shortest Route </li>
+<li class = "displaylistitem">Rank 3 Route: Optimised Route for Closest CPA to a fixed QNLZ CTG first </li>
+<li class = "displaylistitem">Rank 4 Route: Optimised Route for Fasted Tracks first </li>
+<li class = "displaylistitem">Rank 5 Route: Optimised Route for most Suspcicious Tracks first </li>
+</ul>
+
+<p>Each Route can be Displayed on the Map viewer, by hitting its Display Button, within the Route List.</p> 
+
+<h3> Simulating the Execution of the Planned Route</h3>
+
+<p>This demonstration includes an animated simulation of a Surveillance Helo drone performing the naval surveillance. The drone will simulate progress though the route 
+  reviewing each of the Unknown Tracks within its route sequence. The Tracks Unit Type and classification (Hostile: Red, Neutral:Blue and Friendly: Green), are then identified 
+and hence their display symbol updated. So the sample demonstration will show up Neutral Sailing Boats and commercial ships verses Hostile Frigates and Submarines. </p>
+
+<img src="{{ url_for('static', filename='images/MapView.PNG') }}"/>
+
+<p>The Drone scenario for a Route can be executed, following its display by Hitting the Execute Button to run a simple Drone simulation the Route.</p>
+
+<p>Note as the Tactical simulation progresses, some of the Tracks may become lost, and the Helo drone, will reoute to move onto the next Track within its route sequence. 
+  However there is not Automatic recalculaiton of the route, so if new Tracks appear withn the scenario, the use will have to repeat the Track Nominations.  A new Route request would then be required to calculate a route against those new emergent Tracks.  </p>
+<hr>
+<h2>Architecture</h2>
+<img src="{{ url_for('static', filename='images/Architecture.PNG') }}"/>
+<hr>
+<h2>Genetic Algorithm</h2>
+<p>The Routes calculation uses a Genetic Algorithm to determine the option route path to survey the Unknown Tracks.  This is implmented within the Mission Planning Server.   This is simiar to the Travelling saleseperson task, to find the 
+  optimum route between visiting cities, in shortest distance. So the Minimum Fuel Optimiser uses the distance as the Fitness function.  Note "Software Anhealing"  
+  is an alternative method for solving the 'Travelling Saleperson' task,  which has been shown to converge somewhat faster than the Genetic Algorthms. However it only solves the shortest 
+  distance problem, and does not enable different Fitenss functions or User preferences to be considered.   
+</p>
+
+<p> The main function implenting the Genetic Algorithm is the geneticAlgorithm() function. This takes takes a choice of different optimisers, and processes through a generations(typically 100) 
+  number of iterations of the population. This number is hard coded, and could be optimised, to discover if the convergence, no change in population ealier. The Genetic Algorithm makes 
+  use of the following functions, to mutate and breed the next genration population : </p>
+<ul class="displaylist">
+  <li class = "displaylistitem">selection() </li>
+  <li class = "displaylistitem">matingPool()</li>
+  <li class = "displaylistitem">breed() </li>
+  <li class = "displaylistitem">mutate() </li>
+  <li class = "displaylistitem">rankRoutes() </li>
+  </ul>
+  <p> There are a number of different Fitness Functions to optimise the Routes against different criteria. These then allow the user to review and select routes according to 
+    different route priority orders.  The Balanced mode, takes the user selected weights from the slider controls. </p>
+  <ul class="displaylist">
+    <li class = "displaylistitem">BESTDISTANCE:  Which uses the AccInvRouteDistance() Fitness Function </li>
+    <li class = "displaylistitem">BESTCPA: Which uses the AccInvRouteCPA() Fitness Function </li>
+    <li class = "displaylistitem">BESTSPEED: Which uses the AccRouteSpeed() Fitness Function </li>
+    <li class = "displaylistitem">BESTSUSPICION: Which uses the AccRouteSuspicion() Fitness Function </li>
+    <li class = "displaylistitem">BALANCED: Which uses the User Weighted Cost Function across all the above Fitness Function </li>
+    </ul>
+    <p> All the calculated Routes are then assessed against each of the criteria, Fuel (Min Disance), CPA, Speed and Suspicion Priority. 
+      These enable the user to see how the different routes meet the criteria. Obvioulsy some of these routes are calculated to be the same, 
+      especially on the simpler scenarios </p>
+
+    <p>Genetic Algorithms do not particularly scale well, as the number of cities, or Tracks in this case, increase. It takes a significant processing time to 
+      iterate through different populations. So this  processing was seperated out into a seperate web service, so as not to block queries
+  being made into the Tactical Server. The Genetic Algorithm, can then take some time to respond to the Route requests, without impacting the Tactical Scenario updates.  
+  The number of Tracks to be considered within the Route planning process is also limited to a maxiumum of 10. These being selected according to 
+  either the User selection of an Area of Interest (AOI) or by specific Track Nominations to be included in the surveillance routes. </p>
+
+<h2>Implementation Notes</h2>
+
+<p>The main javscript client is the /static/script/mainscript.js Lots of messy raw basic javascript, as I am not familiar with any modern Javascript frameworks. 
+  This script makes json GET and POST web service calls into the Tactical Web Server and the Mission Planning Web Server. </p>
+
+<p>The simulations are held within the Nav Hunter Database.  The main tables are Scenarios, ScenarioEvents and Units.  Please see the Database viewer pages to view 
+  the contents of these tables. The scenarios are loaded outside of this Applicaiton, via Python/SQL scripts from CSV files.  The TacticalPictureServer reads the Hunter_DB database Scenario, ScenarioEvents and 
+  Unit tables into local python lists to be ready to run through the Tactical scenario.</p>
+
+<p> The TacticalPictureServer runs through the scenario events table on a 2 second timer, and enacts the scenario commands into the main Tactical Picture Track Table.
+These events cause Track creation, updates and delete events.   </p>
+
+<p>The Track.py, represents the main Track Item, used in the TacticalPictureServer and also to hold a Track list withinb the Mission Planner.</p>
+<hr>
+<h3>Issues </h3>
+
+<p>I have not yet Implemented maximum route distance or duration constraint. I sense that will consist of a post route calculation evaluation and prune down. 
+  This would require a Prune to the route starting with last waypoint Track, until have sufficient time/distance to get back to Own Ship. 
+  Prune from the end until find a subset route segement hopefully. Otherwise if end without any Track waypoints, this would suggest that the most prominant first Track 
+  is already too far way on its own. So may have to remove that Track from the calculation and run again and see if any remaining route segments are feasible. 
+  Or highlight to the user an infeasible problem route</p>
+
+<p>I have used a very rough LatLong to X,Y calaculation in both the MapServer and Javascript files to relate easy to compute Track X,Y values, 
+  into Lat Longs used to display on Google Maps.  These should be replaced by proper local Coordinate to Lat/ Long Calculations. </p>
+<hr>
+<h3>User Instructions</h3>
+<p>I have used python Flask to serve up the client pages, and implment the two web services. So a total of three python Web Servers. </p>
+
+<ul class="displaylist">
+<li class = "displaylistitem"> python MapViewerServer.py : And Then Open your Web Browser Against http://{Flask:LocalHost}:5000 to see the HTML5/Javascript client </li>
+<li class = "displaylistitem">python TacticalServer.py : This will run the Main Tactical Picture Server on http://{Flask:LocalHost}:8080 to offer GET and POST Web services </li>
+<li class = "displaylistitem">python MissionPlanningServer.py : This will run the Main Mission Planning Server on http://{Flask:LocalHost}:7070 to offer POST Web services </li>
+</ul>
+
+<p>The MapViewerServer serves up the mainscript Javascript file from /static/scripts folder  </p>
+
+<p>Use the Scenario Execution controls:</p>
+
+<ul class="displaylist">
+<li class = "displaylistitem">Press the Green Start Button : To Read and execute the scenario file.</li>
+<li class = "displaylistitem">Press Blue Pause/ Restart: This will pause (and restart) the overall scenario </li>
+<li class = "displaylistitem">Press Red Stop Button: To complete and clear the Scenario </li>
+<li class = "displaylistitem">During the Scenario, Press the "Create Routes" Button to make a Request for new Routes List : </li>
+</ul>
+<p>Then to Display that route from the List, press the Display Button. To execute a simulation that route press again as Execute the Route. </p>
+<hr>
+<h3>Dependencies</h3>
+<p>You will need a Google Maps API to display the Maps in the map Viewer. This needs to be entered at the top of the NavMainPage.html</p>
+<p>You will need a a MySQL database installed, with a hunter_db Database and various Tables instantiated by SQL. 
+  Some python/SQL Database administration scripts exist within the /database folder to help. But these are NOT maintained.</p>
+<p>Python packages: Flask, CORS, pandas, numpy, JSON, mySQL.connector, through either a python PIP or Anaconda conda package installation </p>
+<p></p>
+<hr>
+
+<H3> And Cheers, For an Awesome CS50 Course !</H3>
+<hr>
+{% endblock %} 

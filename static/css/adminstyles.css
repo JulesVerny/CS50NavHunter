@@ -1,0 +1,155 @@
+
+html,
+body {
+  background: #0000AA;
+  height: 100%;
+  margin-top: 5px;
+  margin-left: 10px;
+  padding: 0;
+}
+h1 
+{
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 1.0em;
+  color: white;
+  text-align: center;
+  }
+h2 
+{
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 1.5em;
+  color: white;
+  text-align: left;
+  }
+h3 
+{
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 1.25em;
+  color: white;
+  text-align: left;
+  }
+img.center 
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.footer 
+{
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 1.0em;
+  color: rgb(137, 136, 139);
+  display: block;
+  text-align: center;
+}
+.titlestyle{
+  font-family: Verdana;
+  font-size: 2.0em;
+  color: rgb(241, 237, 237);
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 5px;
+}
+.button 
+{
+  background-color: #272927; 
+  border-color: rgb(234, 235, 229);
+  border-width: 3px;
+  border-radius: 8px;
+  width: 125px;
+  height: 45px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  text-align: center;
+  font-size: 14px;
+  color: white;
+}
+.ScenarioButton {
+  background-color: #0000AA; 
+  border: none;
+  width: 50px;
+  height: 50px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.navlist {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #0000DD;
+}
+
+.navlistitem {
+  float: left;
+}
+
+.displaylist{
+  list-style-type:square;
+  background-color: #0000AA;
+}
+
+.displaylistitem
+{
+  color: white;
+  background-color: #0000AA;
+}
+
+p {
+  font-size: 16px;
+  text-align: left;
+  color: rgb(255, 255, 255);
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #0000BB;
+}
+
+.routestable{
+  border-collapse: collapse;
+}
+th {
+  border: 1px solid rgb(0, 250, 110);
+  padding: 5px;
+  font-size: 16px;
+  text-align: middle;
+  color: rgb(241, 237, 237);
+}
+td {
+  border: 1px solid rgb(0, 250, 110);
+  padding: 2px;
+  font-size: 16px;
+  text-align: middle;
+  color: rgb(241, 237, 237);
+}
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 10px;
+  background-color: #0000AA; 
+  border-style: solid;
+  border-color: aliceblue;
+  margin-top: 10px;
+  margin-bottom: 10px;
+ 
+}
+
+.panelsborder {
+  background-color: #0000AA; 
+  border-style: solid;
+  border-color: aliceblue;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

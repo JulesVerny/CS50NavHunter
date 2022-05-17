@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mission Planning Demonstrator</title>
+    <link rel="shortcut icon" href="#" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script defer
+      src="https://maps.googleapis.com/maps/api/js?key= < YOUR API KEY HERE >&callback=initMap&libraries=geometry&v=weekly">
+	</script>
+	<script src="{{ url_for('static', filename='scripts/mainscript.js') }}"></script>
+  </head>
+  <body>
+
+    <div id="header">
+      <p class = "titlestyle">
+      <img src="{{ url_for('static', filename='images/PageIcon.png') }}"/>
+      Naval Hunter - Mission Planner
+      <img src="{{ url_for('static', filename='images/PageIcon.png') }}"/>
+      <button class = "button" onclick=DisplayAboutPage() >About</button>
+      </p>
+    </div>
+
+    <div id="map" class="mapstyle">
+      <p> Map Should be displayed here  </p>/>
+    </div>
+
+    <div class = panelsborder>
+      <p id="mapdisplaylatlong" class = "statusstyle"> Map Lat Long </p>
+    </div>
+
+    <div id="ScenarioControls" class = controls-grid>
+
+      <div class = "grid-child, panelsborder">
+        <p id="SelectedScenarioText" class = "statusstyle"> Selected Scenario: None</p>
+        <button class = "button" onclick="ReviewDBScenarios()" >Review DB Scenarios</button>
+        <button class = "button" onclick="LoadScenario()" >Load Scenario</button>
+        <p id="BaseLatLongText" class = "statusstyle">  </p>
+      </div>
+
+      <div class =  "grid-child, panelsborder">
+        <p id="mapdisplaylatlong" class = "statusstyle"> Scenario Controls </p>
+        <button class = "ScenarioButton" onclick="StartScenarioFunction()">
+         <img src="{{ url_for('static', filename='images/Play.png') }}"/>
+      </button>
+      <button  class = "ScenarioButton" onclick="PauseButtonFunction()">
+         <img id="PauseButtonImage" src="{{ url_for('static', filename='images/Pause.png') }}"/>
+      </button>
+      <button class = "ScenarioButton" onclick="StopButtonFunction()">
+         <img src="{{ url_for('static', filename='images/Stop.png') }}"/>
+      </button>
+
+      <label id="SimTimeDisplay" class = "statusstyle"></label>
+      <p id="statusstatement" class = "statusstyle"> Waiting.... </p>
+    </div>
+      
+    </div>
+    
+    <div class = panelsborder>
+      <p id="mapdisplaylatlong" class = "statusstyle"> Area of Interest and Track Nominations </p>
+        <button class = "button" onclick="CreateAOI()" >Create AOI</button>
+        <button class = "button" onclick="CompleteAOI()" >AOI Complete</button>
+        <button class = "button" onclick="StartNominations()" >Nominate</button>
+        <button class = "button" onclick="CompleteNominations()" >Complete Nominations</button>
+    </div>
+
+    <div id="MainControls" class = controls-grid>
+
+      <div class = "grid-child, panelsborder">
+        <p class = "statusstyle">User Weight Controls</p>
+
+        <table class = sliderstable style="width:100%">
+          <tr>
+            <th>Weight</th>
+            <th>Value Control</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Fuel</td>
+            <td>
+              <input type="range" min="1" max="100" value="25" class="slider" id="FuelSlider">
+            </td>
+            <td id="FuelSValue">25</td>
+          </tr>
+          <tr>
+            <td>CPA</td>
+            <td>
+              <input type="range" min="1" max="100" value="25" class="slider" id="CPASlider">
+            </td>
+            <td id="CPASValue">25</td>
+          </tr>
+          <tr>
+            <td>Speed</td>
+            <td>
+              <input type="range" min="1" max="100" value="25" class="slider" id="SpeedSlider">
+            </td>
+            <td id="SpeedSValue">25</td>
+          </tr>
+          <tr>
+            <td>Suspicion</td>
+            <td>
+              <input type="range" min="1" max="100" value="25" class="slider" id="SuspicionSlider">
+            </td>
+            <td id="SuspicionSValue">25</td>
+          </tr>
+
+        </table>
+
+      </div>
+
+      <div class = "grid-child, panelsborder">
+        <p class = "statusstyle"> Route Generation Controls </p>
+        <button class = "button" onclick="ResetWeights()" >Reset Weights</button>
+        <button class = "button" onclick="CreateRoutes()" >Create Routes</button>
+        <button class = "button" onclick="ClearRoutes()" >Clear Routes</button>
+      </div>
+    </div>
+
+    <div id="RoutesTable" class = panelsborder >
+      <p class = "statusstyle"> Routes List.... </p>
+      <table class = routestable id="routestable" style="width:100%">
+          <th>Rank</th>
+          <th>Overall Score</th>
+          <th>Route</th>
+          <th>Fuel Score</th>
+          <th>CPA Score</th>
+          <th>Speed Score</th>
+          <th>Suspicion Score</th>
+          <th>Display</th>
+      </table>
+    </div>
+    <div class = panelsborder >
+      <p id="routestatusstatement" class = "statusstyle"> Waiting Routes.... </p>
+    </div>
+    <div id="Footer">
+      <p class = "footer">
+        Mission Planing  Demonstrator
+      </p>
+    </div>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-# CS50NavHunter
+# CS50 NavHunter
 #### Video Demo:  <URL HERE>
 ### Description:
 
